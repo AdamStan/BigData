@@ -1,0 +1,20 @@
+--
+Average grace period on new external debt commitments (years) 
+- Średni okres karencji w nowych zewnętrznych zobowiązaniach dłużnych (lata)
+Karencja 
+– okres obowiązywania umowy ubezpieczenia, w czasie którego ochrona ubezpieczeniowa jest ograniczona lub jeszcze nie obowiązuje.
+--
+Commitments official creditors (COM current US$)
+--
+Concessional debt (% of total external debt)
+--
+Debt stock reduction
+--
+External debt stocks total (DOD current US$)
+--
+Interest payments on external debt total
+--
+Short-term debt
+--
+Technical cooperation grants
+--

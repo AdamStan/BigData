@@ -17,13 +17,14 @@ with open(old_file, 'r', newline='') as csv_file_read:
     next(reader)
     for row in reader:
         i += 1
-        if i % 3 != 1:
-            continue
+        # if i % 3 != 1:
+        #   continue
 			
         buff_row = []
         for i in range(0, 4):
             if i >= 2:
                 string = row[i].replace(',',' ')
+                string = string.replace("  "," ")
                 buff_row.append(string)
             else:
                 buff_row.append(row[i])
