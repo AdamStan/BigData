@@ -3,18 +3,26 @@ Average grace period on new external debt commitments (years)
 - Średni okres karencji w nowych zewnętrznych zobowiązaniach dłużnych (lata)
 Karencja 
 – okres obowiązywania umowy ubezpieczenia, w czasie którego ochrona ubezpieczeniowa jest ograniczona lub jeszcze nie obowiązuje.
+select * from ids_data where indicatorname like "Average grace period on new external debt commitments (years)%"
 --
 Commitments official creditors (COM current US$)
+select * from ids_data where indicatorname like "Commitments official creditors (COM current US$)%"
 --
 Concessional debt (% of total external debt)
+select * from ids_data where indicatorname like "Concessional debt (% of total external debt)%"
 --
 Debt stock reduction
+select * from ids_data where indicatorname like "Debt stock reduction%"
 --
 External debt stocks total (DOD current US$)
+select * from ids_data where indicatorname like "External debt stocks total (DOD current US$)%"
 --
 Interest payments on external debt total
+select * from ids_data where indicatorname like "Interest payments on external debt total%"
 --
 Short-term debt
+select * from ids_data where indicatorname like "Short-term debt%"
 --
 Technical cooperation grants
+select * from ids_data where indicatorname like "Technical cooperation grants%"
 --
