@@ -2,3 +2,102 @@ https://spark.apache.org/docs/latest/
 https://hadoop.apache.org/docs/r2.8.5/
 https://zeppelin.apache.org/docs/0.8.0/
 http://pig.apache.org/docs/r0.15.0/
+
+192.168.102.34:8080
+
+przez putty:
+192.168.102.34:2222
+
+hdfs dfs -mkdir /user/maria_dev/sampledata
+hdfs dfs -chmod 777 /user/maria_dev/sampledata
+hadoop fs -copyToLocal [-ignorecrc] ...
+
+select table geolocation STORED AS ORC AS
+	SELECT * FROM geolocation_stage;
+-- dane beda w bazie nie w csvce
+
+
+-- Ładowanie danych z tabeli HIVE: geolocation 
+a = LOAD 'geolocation' using org.apache.hive.hcatalog.pig.HCatLoader();
+b = filter a by event != 'normal';
+c = foreach b generate driverid, event, (int) '1' as occurance;
+---dump c;
+d = group c by driverid;
+--dump d;
+e = foreach d generate group as driverid, SUM(c.occurance) as total_occureences;
+--dump e;
+g = LOAD 'DriverMileage' using org.apache.hive.hcatalog.pig.HCatLoader();
+h = join e by driverid, g by driverid;
+--DUMP h;
+final_data = foreach h generate $0 as driverid, $1 as events, $3 as totmiles, (float) $3 / $1 as riskfactor;
+--DUMP final_data;
+
+-- wczytanie danych do hive'a
+hdfs dfs -mkdir names
+hdfs dfs -put name.csv names
+
+-- uruchamianie beeline
+beeline -u jdbc:hive2://192.168.102.19:10000 -n maria_dev
+-- tworzenie tabeli w beelinie
+
+CREATE DATABASE test;
+CREATE TABLE test.test1 (id int, name string);
+
+-- instalowanie rzeczy
+cd /etc/yum.repos.d
+cp sandbox.repo
+v
+cd ~
+yum install python-pip
+pip install google-api-python-client==1.6.4
+pip install mrjob==0.5.11
+yum install nano
+
+wget http://files.grouplens.org/datasets/movielens/ml-100k.zip
+
+unzip ml-100k.zip ml-100k/u.data
+
+-- dokumentacja mrjob:
+https://pythonhosted.org/mrjob/guides/writing-mrjobs.html#defining-steps
+-- od Drzymaly:
+# RatingsBreakdown.py
+from mrjob.job import MRJob
+from mrjob.step import MRStep
+
+
+class RatingsBreakdown(MRJob):
+
+    def steps(self):
+        return [
+            MRStep(mapper=self.mapper_get_ratings,
+                   reducer=self.reducer_count_ratings)
+        ]
+
+    def mapper_get_ratings(self, _, line):
+        (userID, movieID, rating, timestamp) = line.split('\t')
+        yield rating, 1
+
+    def reducer_count_ratings(self, key, values):
+        yield key, sum(values)
+
+
+if __name__ == '__main__':
+    RatingBreakdown.run()
+
+
+#----------------- KONIEC-----------
+
+
+
+
+Lokalnie:
+	python RatingsBreakdown.py u.data
+
+Hadoop cluster:
+
+	python Ratings.py -r hadoop --hadoop-streaming-jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar u.data
+
+-----
+wget http://media.sundog-soft.com/hadoop/RatingsBreakdown.py
+
+9995 - led zeppelin
